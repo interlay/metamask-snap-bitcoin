@@ -1,0 +1,41 @@
+{
+  "name": "metamask-snap-bitcoin",
+  "version": "1.0.0",
+  "description": "Metamask Bitcoin Plugin",
+  "main": "build/index.js",
+  "dependencies": {
+    "@types/node": "^12.12.35",
+    "bitcoinjs-lib": "^5.1.10",
+    "ts-node": "^8.6.2",
+    "typescript": "^3.8.3"
+  },
+  "devDependencies": {
+    "snaps-cli": "0.4.1"
+  },
+  "scripts": {
+    "build": "yarn run build:tsc && yarn run build:snap",
+    "build:tsc": "tsc --build --pretty",
+    "build:snap": "mm-snap build",
+    "serve": "mm-snap serve",
+    "start": "yarn run build && yarn run serve"
+  },
+  "author": "Gregory Hill",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/interlay/metamask-snap-bitcoin.git"
+  },
+  "web3Wallet": {
+    "bundle": {
+      "local": "dist/bundle.js",
+      "url": "http://localhost:8081/dist/bundle.js"
+    },
+    "initialPermissions": {
+      "alert": {},
+      "confirm": {},
+      "getPluginState": {},
+      "updatePluginState": {},
+      "wallet_manageAssets": {}
+    }
+  }
+}

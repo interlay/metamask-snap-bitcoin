@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./build",
+    "lib": [
+      "es5",
+      "DOM",
+      "ES2015"
+    ],
+  },
+  "include": [
+    "src/*"
+  ]
+}

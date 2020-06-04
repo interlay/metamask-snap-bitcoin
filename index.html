@@ -1,0 +1,141 @@
+<!doctype html>
+
+<html>
+
+  </head>
+    <title>Bitcoin Wallet</title>
+  </head>
+
+  <body>
+    <h1>Bitcoin Wallet</h1>
+
+    <section class="connect">
+      <button>Connect</button>
+    </section>
+
+    <section class="getAddress">
+      <button>Get Address</button>
+      <output></output>
+    </section>
+
+    <section class="signMessage">
+      <button>Sign Message</button>
+      <input type="text"/>
+      <output></output>
+    </section>
+
+    <section class="exportKeyPair">
+      <button>Export Keys</button>
+      <output></output>
+    </section>
+
+    <section class="getBlockCount">
+      <button>Get Block Count</button>
+      <output></output>
+    </section>
+
+  </body>
+
+  <script>
+
+    // we identify the Snap by the location of its package.json file
+    const origin = new URL('package.json', window.location.href).toString();
+    const snapId = `wallet_plugin_${origin}`;
+
+    const connectButton = document.querySelector('.connect').querySelector('button');
+
+    const getAddressButton = document.querySelector('.getAddress').querySelector('button');
+    const getAddressOutput = document.querySelector('.getAddress').querySelector('output');
+
+    const signMessageButton = document.querySelector('.signMessage').querySelector('button');
+    const signMessageInput = document.querySelector('.signMessage').querySelector('input');
+    const signMessageOutput = document.querySelector('.signMessage').querySelector('output');
+
+    const exportKeyPairButton = document.querySelector('.exportKeyPair').querySelector('button');
+    const exportKeyPairOutput = document.querySelector('.exportKeyPair').querySelector('output');
+
+    const getBlockCountButton = document.querySelector('.getBlockCount').querySelector('button');
+    const getBlockCountOutput = document.querySelector('.getBlockCount').querySelector('output');
+
+    connectButton.addEventListener('click', connect);
+    getAddressButton.addEventListener('click', getAddress);
+    signMessageButton.addEventListener('click', signMessage);
+    exportKeyPairButton.addEventListener('click', exportKeyPair);
+    getBlockCountButton.addEventListener('click', getBlockCount);
+
+    // here we get permissions to interact with and install the plugin
+    async function connect () {
+      await ethereum.send({
+        method: 'wallet_enable',
+        params: [{
+          [snapId]: {}
+        }]
+      })
+    }
+
+    async function getAddress() {
+      try {
+        const response = await ethereum.send({
+          method: snapId,
+          params: [{
+            method: 'getAddress'
+          }]
+        });
+        getAddressOutput.innerText = response;
+      } catch (err) {
+        console.error(err)
+        alert('Problem happened: ' + err.message || err)
+      }
+    }
+
+    async function signMessage() {
+      try {
+        const response = await ethereum.send({
+          method: snapId,
+          params: [{
+            method: 'signMessage',
+            params: {
+              payload: signMessageInput.value
+            }
+          }]
+        });
+        signMessageOutput.innerText = response;
+      } catch (err) {
+        console.error(err)
+        alert('Problem happened: ' + err.message || err)
+      }
+    }
+
+    async function exportKeyPair() {
+      try {
+        const response = await ethereum.send({
+          method: snapId,
+          params: [{
+            method: 'exportKeyPair',
+          }]
+        });
+        exportKeyPairOutput.innerText = response;
+      } catch (err) {
+        console.error(err)
+        alert('Problem happened: ' + err.message || err)
+      }
+    }
+
+    async function getBlockCount() {
+      try {
+        const response = await ethereum.send({
+          method: snapId,
+          params: [{
+            method: 'getBlockCount',
+          }]
+        });
+        getBlockCountOutput.innerText = response;
+      } catch (err) {
+        console.error(err)
+        alert('Problem happened: ' + err.message || err)
+      }
+    }
+
+  </script>
+
+</html>
